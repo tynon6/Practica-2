@@ -1,0 +1,13 @@
+ARG PYTHON_VERSION=3.12
+FROM python:${PYTHON_VERSION}-slim
+
+WORKDIR /app
+
+# Crear y activar el entorno virtual en /opt/venv
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Actualizar pip e instalar dependencias si existen
+RUN pip install --no-cache-dir --upgrade pip
+
+CMD ["python"]

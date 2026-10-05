@@ -1,0 +1,27 @@
+services:
+  py311:
+    build:
+      context: .
+      args:
+        PYTHON_VERSION: "3.11"
+    volumes:
+      - ..:/app
+    command: python --version
+
+  py312:
+    build:
+      context: .
+      args:
+        PYTHON_VERSION: "3.12"
+    volumes:
+      - ..:/app
+    command: python --version
+
+  py313:
+    build:
+      context: .
+      args:
+        PYTHON_VERSION: "3.13"
+    volumes:
+      - ..:/app
+    command: python --version
