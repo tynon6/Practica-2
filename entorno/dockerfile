@@ -3,11 +3,12 @@ FROM python:${PYTHON_VERSION}-slim
 
 WORKDIR /app
 
-# Crear y activar el entorno virtual en /opt/venv
+# Mantiene el entorno virtual fuera del volumen que monta el proyecto.
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Actualizar pip e instalar dependencias si existen
-RUN pip install --no-cache-dir --upgrade pip
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r /tmp/requirements.txt
 
-CMD ["python"]
+CMD ["pytest", "-q"]
