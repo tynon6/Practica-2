@@ -27,3 +27,10 @@ python src/app.py
 ```
 
 En la interfaz se puede cambiar la definición manualmente, importar una ruta de archivo y exportar indicando su ruta y extensión. La ventana muestra la representación gráfica, tabla completa, resultado y traza paso a paso, además de las operaciones de lenguajes.
+
+## Evidencias
+
+1. Definición de un autómata y resultado de aceptación: [evidencia-1.png](../evidencias/evidencia-1.png).
+2. Diagrama, tabla de transiciones y controles de simulación: [evidencia-2.png](../evidencias/evidencia-2.png).
+3. Definición de un AFND-λ con transición vacía: [evidencia-3.png](../evidencias/evidencia-3.png).
+4. Diagrama y tabla de transiciones del AFND-λ: [evidencia-4.png](../evidencias/evidencia-4.png).
