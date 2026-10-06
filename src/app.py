@@ -44,8 +44,11 @@ def main(page: ft.Page) -> None:
     cell_fields: dict[tuple[str, str], ft.TextField] = {}
 
     def present(machine: Automaton) -> None:
-        nonlocal current
+        nonlocal current, trace, cursor
         current = machine
+        trace = []
+        cursor = 0
+        trace_view.controls = []
         alphabet.value = ", ".join(machine.alphabet)
         states.value = ", ".join(machine.states)
         initial.value = machine.initial
