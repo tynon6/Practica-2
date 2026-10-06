@@ -1,5 +1,5 @@
 import pytest
-from lenguajes import prefijos, sufijos, subcadenas, kleene_y_positiva
+from src.lenguajes import prefijos, sufijos, subcadenas, kleene_y_positiva
 
 def test_cadena_vacia():
     assert prefijos("") == [""]
