@@ -158,4 +158,5 @@ def load_automaton(path: str | Path) -> Automaton:
 
 def save_automaton(machine: Automaton, path: str | Path) -> None:
     path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(dumps(machine, path.suffix), encoding="utf-8")
