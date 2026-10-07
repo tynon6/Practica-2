@@ -1,5 +1,7 @@
 # Práctica 2: Autómatas Finitos No Deterministas (AFND) y Simulación de AFD con Interfaz Gráfica
 
+> **Nota:** Las operaciones sobre cadenas y lenguajes utilizadas en esta práctica proceden de la **Práctica 1** y se reutilizan directamente desde el repositorio anterior.
+
 ## Datos Generales
 * **Unidad de Aprendizaje:** Teoría de la Computación
 * **Carrera:** Ingeniería en Sistemas Computacionales
