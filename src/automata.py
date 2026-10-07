@@ -60,7 +60,8 @@ class Automaton:
     def lambda_closure_with_moves(self, states: Iterable[str]) -> tuple[set[str], list[tuple[str, str, str]]]:
         """Calcula la clausura y conserva las transiciones λ recorridas."""
         closure = set(states)
-        pending = list(closure)
+        # Procesa los estados en un orden estable para que la traza sea reproducible.
+        pending = sorted(closure, reverse=True)
         moves: list[tuple[str, str, str]] = []
         while pending:
             state = pending.pop()
