@@ -1,18 +1,28 @@
-name: pruebas
+name: Integración Continua - Práctica 2
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  pytest:
+  test:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        version: ["3.11", "3.12", "3.13"]
+        python-version: ['3.11', '3.12', '3.13']
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.version }}
-      - run: pip install -r requirements.txt
-      - run: pytest -q
+    - uses: actions/checkout@v4
+    - name: Configurar Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Ejecutar pruebas con Pytest
+      run: |
+        pytest

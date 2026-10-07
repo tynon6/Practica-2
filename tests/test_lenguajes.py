@@ -1,4 +1,8 @@
 import pytest
+from src.lenguajes import prefijos, sufijos, subcadenas, kleene_y_positiva
+
+from sys import path
+path.insert(0, '..')
 from lenguajes import prefijos, sufijos, subcadenas, kleene_y_positiva
 
 def test_cadena_vacia():
