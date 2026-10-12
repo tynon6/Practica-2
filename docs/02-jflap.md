@@ -93,3 +93,50 @@ La $\lambda$-clausura es indispensable en la evaluación de cadenas dentro de un
 1. **Punto de partida expandido:** Permite que la simulación inicie de forma simultánea en una "superposición de estados" (todos los pertenecientes a $\lambda$-clausura($q_0$))[cite: 2].
 2. **Evaluación Instantánea:** Tras consumir cada símbolo del alfabeto, la máquina recalcula la $\lambda$-clausura de los nuevos estados alcanzados antes de procesar el siguiente carácter[cite: 2].
 3. **Criterio de Aceptación:** Una cadena es aceptada si al finalizar la lectura de todos sus caracteres, la interacción de la $\lambda$-clausura del conjunto actual de estados incluye al menos un estado clasificado como final (`Final State`)[cite: 2].
+
+## 2.4. Conversiones y análisis comparativo
+
+### 1. Metodología de Conversión
+Para transformar los autómatas con transiciones nulas (AFND-$\lambda$) a Autómatas Finitos Deterministas (AFD) equivalentes en JFLAP, se sigue el procedimiento formal de dos etapas[cite: 1, 2]:
+1. **Paso 1 (AFND-$\lambda \rightarrow$ AFND):** Se calcula la $\lambda$-clausura para eliminar las transiciones vacías y redefinir la función de transición sobre los símbolos de entrada $\Sigma = \{0, 1\}$[cite: 1, 2].
+2. **Paso 2 (AFND $\rightarrow$ AFD):** Se aplica la construcción de subconjuntos (*Subset Construction*) mediante la opción `Convert -> Convert to DFA` de JFLAP, asignando un nuevo estado en el AFD para cada subconjunto activo alcanzible de estados del AFND[cite: 1, 2].
+
+Los autómatas resultantes de la conversión se encuentran guardados en el directorio `automatas/conversiones/`[cite: 3].
+
+---
+
+### 2. Tabla Comparativa de Estados y Cota Teórica $2^n$
+
+A continuación se analizan 5 casos representativos de la **Lista 3** comparando el número de estados en el autómata no determinista original ($n$), el número de estados en el AFD resultante y el límite teórico máximo posible ($2^n$)[cite: 1, 2]:
+
+| Ejercicio | Expresión Regular | Estados AFND-λ ($n$) | Estados AFD Resultante | Cota Máxima Teórica ($2^n$) | ¿Alcanza la cota? |
+| :---: | :--- | :---: | :---: | :---: | :---: |
+| **151** | `(00 \| 11)* (0 \| 1)*` | 6 | 4 | $2^6 = 64$ | No |
+| **237** | `(0011 \| 1100)* (0 \| 1)* (0011 \| 1100)*` | 18 | 8 | $2^{18} = 262,144$ | No |
+| **238** | `(01 \| 10)* (00 \| 11) (01 \| 10)*` | 9 | 6 | $2^9 = 512$ | No |
+| **254** | `(00 \| 11)* (0101 \| 1010) (00 \| 11)*` | 16 | 10 | $2^{16} = 65,536$ | No |
+| **260** | `(00 \| 11)* (010 \| 101) (00 \| 11)*` | 15 | 9 | $2^{15} = 32,768$ | No |
+
+---
+
+### 3. Explicación de la Cota $2^n$ y Caso Bibliográfico de Peor Escenario
+
+#### Explicación Teórica de la Cota $2^n$:
+La cota $2^n$ proviene del **conjunto potencia** del conjunto de estados del AFND ($\vert{}P(Q)\vert{} = 2^{\vert{}Q\vert{}}$)[cite: 1, 2]. Teóricamente, un AFD equivalente podría requerir un estado distinto por cada combinación posible de estados en los que el AFND puede encontrarse simultáneamente[cite: 1, 2].
+
+Sin embargo, en las expresiones regulares cotidianas y de uso habitual **esta cota rara vez se alcanza**[cite: 1, 2]. Esto ocurre porque la mayoría de las combinaciones de estados son inalcanzables en la práctica debido a las restricciones de orden y estructura linealimpuestas por los lenguajes[cite: 1, 2].
+
+#### Familia de Lenguajes donde SÍ se Alcanza la Cota Exponencial:
+De acuerdo con la bibliografía clásica de Teoría de la Computación (*Hopcroft, Motwani & Ullman*), existe una familia explícita de lenguajes regulares que evidencia la explosión de estados del AFD[cite: 1, 2]:
+
+$$L_k = \{ w \in \{0, 1\}^* \mid \text{el } k\text{-ésimo símbolo desde el final de } w \text{ es un '1'} \}$$
+
+- **Para el AFND:** Solo requiere **$k + 1$ estados**, ya que el no determinismo le permite "adivinar" sin costo el momento exacto en que comienza el sufijo final de longitud $k$[cite: 1, 2].
+- **Para el AFD:** Requiere obligatoriamente **$2^k$ estados**, debido a que un autómata determinista necesita recordar exactamente todos los combinaciones de los últimos $k$ bits leídos para no cometer errores de aceptación[cite: 1, 2].
+
+---
+
+### 4. Comparativa de Eficiencia y Diseño
+
+- **Facilidad de Diseño e Interpretación:** El AFND-$\lambda$ es mucho más intuitivo y directo de diseñar a partir de expresiones regulares complejas mediante algoritmos modulares (como el de Thompson)[cite: 1, 2].
+- **Eficiencia en la Ejecución/Reconocimiento:** El AFD es significativamente más eficiente en tiempo de ejecución ($O(\vert{}w\vert{})$) ya que solo requiere procesar un único estado por carácter sin necesidad de mantener ni simular bifurcaciones o calcular $\lambda$-clausuras[cite: 1, 2].
