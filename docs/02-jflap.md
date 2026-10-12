@@ -60,3 +60,36 @@ Con la herramienta *Step with State* para la cadena `0100`:
 - **Inicio:** El autómata evalúa la lectura del prefijo `01` retornando a `q0`.
 - **Bifurcación:** Ante el siguiente `0`, el autómata bifurca un camino intentando reconocer la pareja `01` y otro hacia el infijo obligatorio `00`.
 - **Aceptación:** Solo la rama que procesa la segunda '0' alcanza el estado de éxito `q5`, demostrando la selección correcta de caminos no deterministas.
+
+## 2.3. Transiciones lambda
+
+### 1. Justificación del Uso y Ubicación de las Transiciones Lambda ($\lambda$)
+En el desarrollo de los autómatas de la **Lista 3** (como el Ejercicio 238), las transiciones $\lambda$ desempeñan un rol estructural clave:
+- **Modularidad del diseño:** Permiten conectar el bloque prefijo `(01 | 10)*`, el infijo obligatorio `(00 | 11)` y el sufijo `(01 | 10)*` sin consumir caracteres de la cadena de entrada[cite: 2].
+- **Bifurcación de alternativas:** Se ubican en las uniones de las ramas (`OR`) para permitir que la máquina intente reconocer múltiples patrones en paralelo desde un mismo punto de partida[cite: 2].
+- **Construcción de Thompson:** Facilitan el retorno a estados iniciales en las clausuras de Kleene (`*`) sin introducir dependencias de símbolos adicionales[cite: 2].
+
+---
+
+### 2. Cálculo de la $\lambda$-clausura ($\lambda$-closure)
+
+La **$\lambda$-clausura** de un estado $q$ representa el conjunto de todos los estados a los que se puede transitar desde $q$ utilizando únicamente transiciones vacías ($\lambda$), incluyendo al propio estado $q$[cite: 2].
+
+A continuación se presenta el cálculo formal de la $\lambda$-clausura para el autómata del **Ejercicio 238**:
+
+| Estado ($q$) | $\lambda$-clausura ($E(q)$) | Explicación del Alcance |
+| :--- | :--- | :--- |
+| **$q_0$** | $\{q_0, q_1, q_3\}$ | Desde el inicio se alcanzan por $\lambda$ los puntos de partida de las ramas no deterministas[cite: 2]. |
+| **$q_1$** | $\{q_1\}$ | No posee salidas $\lambda$; requiere consumir el símbolo '0'[cite: 2]. |
+| **$q_2$** | $\{q_2, q_0, q_1, q_3\}$ | Retorna al estado $q_0$ en bucle y propaga la clausura de $q_0$[cite: 2]. |
+| **$q_3$** | $\{q_3\}$ | No posee salidas $\lambda$; requiere consumir el símbolo '1'[cite: 2]. |
+| **$q_4$** | $\{q_4, q_0, q_1, q_3\}$ | Retorna a $q_0$ tras completar el bloque alternativo `10`[cite: 2]. |
+| **$q_5$** | $\{q_5, q_6, q_8\}$ | Estado de aceptación que distribuye por $\lambda$ hacia el bloque final del sufijo[cite: 2]. |
+
+---
+
+### 3. Papel de la $\lambda$-clausura en el Reconocimiento de Cadenas
+La $\lambda$-clausura es indispensable en la evaluación de cadenas dentro de un AFND-$\lambda$ porque[cite: 2]:
+1. **Punto de partida expandido:** Permite que la simulación inicie de forma simultánea en una "superposición de estados" (todos los pertenecientes a $\lambda$-clausura($q_0$))[cite: 2].
+2. **Evaluación Instantánea:** Tras consumir cada símbolo del alfabeto, la máquina recalcula la $\lambda$-clausura de los nuevos estados alcanzados antes de procesar el siguiente carácter[cite: 2].
+3. **Criterio de Aceptación:** Una cadena es aceptada si al finalizar la lectura de todos sus caracteres, la interacción de la $\lambda$-clausura del conjunto actual de estados incluye al menos un estado clasificado como final (`Final State`)[cite: 2].
